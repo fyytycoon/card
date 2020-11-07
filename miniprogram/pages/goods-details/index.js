@@ -68,7 +68,7 @@ Page({
       })
     }else{
       that.setData({
-        nowopenid : app.globalData.nowopenid,
+        nowopenid : app.globalData.userProfile._openid,
         userProfile : app.globalData.userProfile
       })
     }

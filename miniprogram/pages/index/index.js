@@ -49,10 +49,13 @@ Page({
             nowopenid: app.globalData.userProfile._openid,
             dianzancount: app.globalData.userProfile.dianzancount,
             like:app.globalData.like,
-            phone: app.globalData.dongminguser.phone,
             jiazai:true,
           })
-          app.globalData.nowopenid = that.data.nowopenid
+          if(!app.globalData.dongminguser){
+            that.setData({
+              phone: app.globalData.dongminguser.phone,
+            })
+          }
           that.shouquan()
         }  
       }else{
@@ -62,10 +65,13 @@ Page({
             nowopenid: app.globalData.userProfile._openid,
             dianzancount: app.globalData.userProfile.dianzancount,
             like:app.globalData.like,
-            phone: app.globalData.dongminguser.phone,
             jiazai:true,
           })
-          app.globalData.nowopenid = that.data.nowopenid
+          if(!app.globalData.dongminguser){
+            that.setData({
+              phone: app.globalData.dongminguser.phone,
+            })
+          }
           that.shouquan()
       //   }
       }
@@ -323,11 +329,6 @@ Page({
         })
       }
     })
-      app.watch(this, {
-        like: function (newVal) {
-          console.log(newVal)
-        }
-      })
   },
 
   prompt() {
@@ -364,7 +365,7 @@ Page({
     wx.cloud.callFunction({
       name:'getwxacode',
       data:{
-        path:'page/index/index?id='+this.data.nowopenid,
+        path:'/pages/index/index?id='+this.data.nowopenid,
         imgid:this.data.userProfile.img[0],
         flag:this.data.nowopenid
       },
