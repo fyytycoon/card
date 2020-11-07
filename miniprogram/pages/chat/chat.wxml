@@ -1,0 +1,12 @@
+<view class="container" style="{{containerStyle}}">
+<cu-custom bgColor="bg-gradual-white" isBack="{{true}}" style="height:30px"><view slot="backText">返回</view><view slot="content">{{nickname}}</view></cu-custom>
+  <chatroom
+    style=" "
+    groupId="{{groupId}}"
+    groupName="{{chatRoomGroupName}}"
+    userInfo="{{userInfo}}"
+    lookopenId="{{lookopenId}}"
+    cardInfo="{{cardInfo}}"
+    dis="{{dis}}"
+  ></chatroom>
+</view>

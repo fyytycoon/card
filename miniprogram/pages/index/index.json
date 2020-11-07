@@ -1,0 +1,9 @@
+{
+  "usingComponents": {
+    "mp-cells": "weui-miniprogram/cells/cells",
+    "mp-cell": "weui-miniprogram/cell/cell",
+    "poster": "../../components/wxa-plugin-canvas/poster",
+    "wux-dialog": "../../components/wuxui/dialog/index"
+  }
+  
+}

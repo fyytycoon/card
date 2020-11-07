@@ -1,0 +1,95 @@
+<view class="chatroom">
+  <view class="header" wx:if="{{header}}">
+    
+    <view class='order-shortcut'>
+    <view class='item' bindtap='copyData' style="margin-left: 5vw;">
+      <image class="icon" src="/images/weixin.png" background-size="cover"></image>
+      <view class='text'>加微信</view>
+    </view>
+    
+    <view class='item' bindtap='callPhone'>
+      <image class="icon" src="/images/cell.png" background-size="cover"></image>
+      <view class='text'>打电话</view>
+    </view>
+    
+    <view class='item' bindtap='goOrder'>
+      <image class="icon" src="/images/icon/qinglianxiwo.png" background-size="cover"></image>
+      <view class='text'>请联系我</view>
+    </view>
+  </view>
+  </view>
+
+  <!-- chats -->
+  <scroll-view 
+    class="body" 
+    scroll-y 
+    scroll-with-animation="{{scrollWithAnimation}}"
+    scroll-top="{{scrollTop}}" 
+    scroll-into-view="{{scrollToMessage}}"
+    bindscrolltoupper="onScrollToUpper"
+  >
+  <view wx:for="{{chats}}" wx:key="{{item._id}}" id="item-{{index}}">
+    <view class="cu-info" wx:if="{{item.msgType === 'tishi'}}">请电话联系我！</view>
+    <view class="message {{openId == item._openid ? 'message__self' : ''}}" wx:else>
+      <image 
+        class="avatar"
+        src="{{item.avatar}}"
+        mode="scaleToFill"
+      ></image> 
+      <view class="main">
+        <view class="nickname">{{item.nickName}}</view>
+        <block wx:if="{{item.msgType === 'image'}}">
+          <view class="image-wrapper">
+            <view class="loading" wx:if="{{item.writeStatus > -1}}">{{item.writeStatus}}%</view>
+            <image 
+              src="{{item.tempFilePath || item.imgFileID}}" 
+              data-fileid="{{item.tempFilePath || item.imgFileID}}" 
+              class="image-content" 
+              style="{{item.imgStyle}}"
+              mode="scallToFill" 
+              bindtap="onMessageImageTap"></image>
+          </view>
+        </block>
+        <block wx:else>
+          <view class="text-wrapper">
+            <view class="loading" wx:if="{{item.writeStatus === 'pending'}}">···</view>
+            <view class="text-content">{{item.textContent}}</view>
+          </view>
+        </block>
+      </view>
+    </view>
+    
+  </view>
+  </scroll-view>
+
+  <!-- message sender -->
+  <!-- <view class="footer">
+    <view class="message-sender" wx:if="{{userInfo}}">
+      <input 
+        class="text-input"
+        type="text"
+        confirm-type="send"
+        bindconfirm="onConfirmSendText"
+        cursor-spacing="20"
+        value="{{textInputValue}}"
+      ></input>
+      <image 
+        src="./photo.png" 
+        class="btn-send-image" 
+        mode="scaleToFill"
+        bindtap="onChooseImage"
+      ></image>
+    </view>
+  </view> -->
+  <form bindsubmit="formConfirmSendText">
+    <view class="cu-bar foot input {{InputBottom!=0?'cur':''}}" style="bottom:{{InputBottom}}px">
+      <input class="solid-bottom" confirm-type="send" bindconfirm="onConfirmSendText"  adjust-position="true" focus="{{focus}}" bindfocus="bindfocus" maxlength="300" name="textInputValue" value="{{textInputValue}}" cursor-spacing="10"></input>
+       <image style="width: 25px;height: 25px;margin: 0 20rpx;"
+        src="./photo.png" 
+        bindtap="onChooseImage"
+       ></image>
+      <button class="cu-btn bg-green shadow" formType="submit">发送</button>
+    </view>
+  </form>
+</view>
+

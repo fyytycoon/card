@@ -1,0 +1,28 @@
+<cu-custom bgColor="bg-gradual-white" isBack="{{true}}" style="height:30px"><view slot="backText">返回</view><view slot="content">名片夹</view></cu-custom>
+
+<view wx:if="{{jiazai}}">
+  <view class="cu-list menu-avatar" >
+  <view class="cu-item " wx:for="{{cardlist}}" wx:key="{{item}}" data-id="{{ item.cardopenid }}" bindtap="goindex">
+    <view class="cu-avatar radius lg" >
+      <image src="{{item.cardimg}}" role="img" style="height: 100rpx;"></image>
+    </view>
+    <view class="content">
+      <view>
+        <text class="text-cut">{{item.cardname}}</text>
+        <view class="cu-tag round bg-orange sm" style="font-size: 20rpx;">{{item.cardtitle}}</view>
+      </view>
+      <view class="text-gray text-sm flex">
+        <text class="text-cut">{{item.cardorganization}}</text>
+      </view>
+    </view>
+  </view>
+  </view>
+
+  <view class="no-order" hidden="{{cardlist.length == 0 ? false : true}}">
+      <image src="/images/no-order.png" class="no-order-img"></image>
+      <view class="text">暂无记录</view>
+  </view>
+</view>
+<view class="loading" style="height:404px" wx:else>
+    <image class="img" src="/images/icon/loading.gif"></image>
+</view>

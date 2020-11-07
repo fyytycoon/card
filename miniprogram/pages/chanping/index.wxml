@@ -1,0 +1,35 @@
+<cu-custom bgColor="bg-gradual-white"><view slot="content">产品</view></cu-custom>
+<view wx:if="{{tlist.length == 0 ? false : true}}">
+  <slideTab tList="{{tlist}}" bind:changeCurrent="swichNav" currentTab="{{currentTab}}" ttype="{{navigate_type}}" tname="firstType">
+    <view style="margin-top:{{navigate_type==1 ? 0 : 86}}rpx;">
+      <scroll-view scroll-x="true" class="scroll-view-x" style="padding-top:10rpx" scroll-with-animation="true" wx:if="{{tlist[currentTab].secondList}}" scroll-left='0' bindscroll="getleft">
+        <view>
+          <view class="navigator_second" wx:for="{{tlist[currentTab].secondList}}" wx:for-item="childItem" bindtap="getProductList" data-id="{{childItem._id}}">
+            <image class="navigator_icon" src="{{childItem.icon[0]}}"></image>
+            <text class="navigator_text">{{childItem.name}}</text>
+          </view>
+        </view>
+        <view wx:if="{{tlist[currentTab].thirdList}}">
+          <view class="navigator_second" wx:for="{{tlist[currentTab].thirdList}}" wx:for-item="childItem" data-id="{{childItem._id}}" bindtap="getProductList">
+            <image class="navigator_icon" src="{{childItem.icon[0]}}" ></image>
+            <text class="navigator_text">{{childItem.name}}</text>
+          </view>
+        </view>
+      </scroll-view >
+      <view wx:if="{{slideShow}}" class="slide">
+        <view class='slide-bar' >
+          <view class="slide-show" style="width:{{slideWidth}}rpx; margin-left:{{slideLeft<=1 ? 0 : slideLeft+'rpx'}};"></view>
+        </view>
+      </view>
+      <view>
+        <productBox pList="{{list[currentTab]}}">
+        </productBox>
+      </view>
+    </view>
+  </slideTab> 
+  <loadmore mtype="{{mtype}}" hidden="{{hidden}}" nodata_str="已经没有更多了~"></loadmore> 
+</view>
+<view class="no-order" wx:else>
+    <image src="/images/no-order.png" class="no-order-img"></image>
+    <view class="text">暂无产品</view>
+</view>

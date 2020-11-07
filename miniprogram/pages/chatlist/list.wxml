@@ -1,0 +1,41 @@
+<cu-custom bgColor="bg-gradual-white" isBack="{{true}}" style="height:30px"><view slot="backText">返回</view><view slot="content">聊天列表</view></cu-custom>
+<!-- list.wxml -->
+<view wx:if="{{jiazai}}">
+  <view class="list-container">
+  <view 
+    wx:for="{{ friends }}" 
+    wx:key="friends{{ index }}" 
+    class="list-row-wrapper" 
+    hover-class="list-row-hover" 
+    hover-stay-time="50"
+    data-data="{{ item }}"
+    bindtap="gotoChat">
+    <view class="list-row">
+        <view class="list-icon">
+          <view class="list-photo">
+            <image src="{{ item.photo }}" style="width: 50px; height: 50px;"></image>
+          </view>
+          <view wx:if="{{ item.nums > 0 }}" class="message-dot"></view>
+        </view>
+        <view class="list-content">
+          <view class="list-content-layout">
+            <view class="list-content-name">
+              <text class="list-content-title">{{ item.nickname }}</text>
+              <text class="list-content-time">{{ item.time }}</text>
+            </view>
+            <view class="list-content-brief">
+              <text>[{{ item.nums }}条]{{ item.message }}</text>
+            </view>
+          </view>
+        </view>
+      </view>
+    </view>
+  </view>
+  <view class="no-order" hidden="{{friends.length == 0 ? false : true}}">
+    <image src="/images/no-order.png" class="no-order-img"></image>
+    <view class="text">暂无记录</view>
+  </view>
+</view>
+<view class="loading" style="height:404px" wx:else>
+    <image class="img" src="/images/icon/loading.gif"></image>
+</view>

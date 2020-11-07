@@ -1,0 +1,7 @@
+{
+  "usingComponents": {
+    "wux-cell-group": "../../components/wuxui/cell-group/index",
+    "wux-cell": "../../components/wuxui/cell/index",
+    "wux-select": "../../components/wuxui/select/index"
+}
+}

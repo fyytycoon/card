@@ -1,0 +1,11 @@
+<!--pages/product_list/index.wxml-->
+<cu-custom bgColor="bg-gradual-white" isCustom="{{true}}"><view slot="content">{{fenleiname?fenleiname:'分类'}}</view></cu-custom>
+<view style="margin:0">
+  <productBox pList="{{list}}">
+  </productBox>
+</view>
+<view>  
+  <loading hidden="{{hidden}}" bindchange="loadingChange">  
+  加载中...  
+  </loading>  
+</view>  

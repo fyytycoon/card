@@ -1,0 +1,42 @@
+/* 暂无 */
+.no-order{
+  width: 100%;
+  position: absolute;
+  bottom: 0;
+  top: 240rpx;
+  left: 0;
+  right: 0;
+  text-align: center;
+  padding-top: 203rpx;
+  background-color: #F2f2f2;
+}
+.no-order-img{
+  width: 81rpx;
+  height: 96rpx;
+  margin-bottom: 31rpx;
+}
+.no-order .text{
+  font-size:28rpx;
+  color:#999999;
+  text-align: center
+}
+.loading {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+.loading .img {
+  width: 120rpx;
+  height: 120rpx;
+}
+
+.loading .text {
+  margin-top: 20rpx;
+  width: 100%;
+  font-size: 24rpx;
+  color: #999;
+  text-align: center;
+}

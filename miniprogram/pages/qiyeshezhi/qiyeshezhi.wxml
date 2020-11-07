@@ -1,0 +1,20 @@
+<!--pages/qiyeshezhi/qiyeshezhi.wxml-->
+<cu-custom bgColor="bg-gradual-white"  isCustom="{{true}}"><view slot="content">企业设置</view></cu-custom>
+
+<view class="container">
+  <view class="space"></view>
+  
+  <view class="menu-item" bindtap="gostaffshenqing">
+    <view class="l">企业员工申请</view>
+    <image class="next" src="/images/icon/next.png"></image>
+  </view>
+  <view class="line"></view>
+  <view class="menu-item" bindtap="gostaffguanli">
+    <view class="l">企业员工管理</view>
+    <image class="next" src="/images/icon/next.png"></image>
+  </view>
+ 
+  <view class="space"></view>
+</view>
+
+<template is="apifmLogin" data="{{wxlogin: wxlogin}}" />

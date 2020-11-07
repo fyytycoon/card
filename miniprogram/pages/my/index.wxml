@@ -1,0 +1,134 @@
+<!-- <import src="/template/login/index.wxml" /> -->
+<cu-custom bgColor="bg-gradual-white"><view slot="content">个人中心</view></cu-custom>
+<view class="container">
+	<view wx:if="{{apiUserInfoMap}}" class="userinfo">
+		<image wx:if="{{apiUserInfoMap.avatarUrl}}" class="userinfo-avatar" src="{{ apiUserInfoMap.avatarUrl }}" background-size="cover"></image>
+		<text class="userinfo-nickname">{{ apiUserInfoMap.nickName}}</text>
+	</view>
+  <view wx:else class="userinfo" style="margin-bottom:50rpx;">
+		<image class="userinfo-avatar" src="/images/order/nologin.png" background-size="cover"></image>
+		<button class="weui-btn mini-btn" plain="true" size="mini" open-type="getUserInfo" bindgetuserinfo="onGetUserInfo">立即登录</button>
+	</view>
+  <view class="space"></view>
+  <navigator url="/pages/order-list/index">
+    <view class="menu-item">
+      <view class="l">我的订单</view>
+      <image class="next" src="/images/icon/next.png"></image>
+    </view>
+  </navigator>
+  <view class="line"></view>
+  <view class='order-shortcut'>
+    <view class='item' bindtap='goOrder' data-type="0">
+      <view wx:if="{{count_id_no_pay !== 0}}" class='dot'>{{count_id_no_pay}}</view>
+      <image class="icon" src="/images/order/topay.png" background-size="cover"></image>
+      <view class='text'>待付款</view>
+    </view>
+    <view class='item' bindtap='goOrder' data-type="1">
+      <view wx:if="{{count_id_no_transfer !== 0}}" class='dot'>{{count_id_no_transfer}}</view>
+      <image class="icon" src="/images/order/fahuo.png" background-size="cover"></image>
+      <view class='text'>待发货</view>
+    </view>
+    <view class='item' bindtap='goOrder' data-type="2">
+      <view wx:if="{{count_id_no_confirm !== 0}}" class='dot'>{{count_id_no_confirm}}</view>
+      <image class="icon" src="/images/order/shouhuo.png" background-size="cover"></image>
+      <view class='text'>待收货</view>
+    </view>
+    <view class='item' bindtap='goOrder' data-type="3">
+      <view wx:if="{{count_id_no_reputation !== 0}}" class='dot'>{{count_id_no_reputation}}</view>
+      <image class="icon" src="/images/order/pj.png" background-size="cover"></image>
+      <view class='text'>待评价</view>
+    </view>
+    <view class='item' bindtap='goOrder' data-type="99">
+      <image class="icon" src="/images/order/shouhou.png" background-size="cover"></image>
+      <view class='text'>售后</view>
+    </view>
+  </view>
+  <view wx:if="{{canHX}}" class="line"></view>
+
+  <view class="space"></view>
+  <navigator url="/pages/select-address/index">
+    <view class="menu-item">
+      <view class="l">收货地址</view>
+      <image class="next" src="/images/icon/next.png"></image>
+    </view>
+  </navigator>
+  <view class="line"></view>
+  <view class="menu-item" bindtap="goform">
+      <view class="l">更换我的名片</view>
+      <image class="next" src="/images/icon/next.png"></image>
+  </view>
+  <view class="line"></view>
+  <view class="menu-item" bindtap="gowodemingpian" wx:if="{{wodemingpian}}">
+      <view class="l">查看我的名片</view>
+      <image class="next" src="/images/icon/next.png"></image>
+  </view>
+  <view class="line"></view>
+  <navigator url="/pages/card-holder/cardholder">
+    <view class="menu-item">
+      <view class="l">名片夹</view>
+      <image class="next" src="/images/icon/next.png"></image>
+    </view>
+  </navigator>
+  <view class="line"></view>
+  <view wx:if="{{iscarduser}}" class="menu-item" bindtap="gouserlook">
+    <view class="l">谁看过我</view>
+    <image class="next" src="/images/icon/next.png"></image>
+  </view>
+  <view class="line"></view>
+  <view wx:if="{{iscarduser}}" class="menu-item" bindtap="goChatlist">
+    <view class="l">聊天室</view>
+    <view class="chat-num" hidden="{{chatnum<=0?true:false}}">{{chatnum}}</view>
+    <image class="next" src="/images/icon/next.png"></image>
+  </view>
+
+  <view class="space"></view>
+  <view class="menu-item" bindtap="gobinding">
+    <view class="l">绑定企业</view>
+    <view class="title" style="display: flex;">{{dongminguser.organizationid?dongminguser.organization:'未绑定'}}
+      <image class="next" src="/images/icon/next.png"></image>
+    </view>
+    
+  </view>
+  <view class="line"></view>
+    <view wx:if="{{dongminguser.organizationid}}" class="menu-item" bindtap="gofenleilist">
+      <view class="l">产品分类</view>
+      <image class="next" src="/images/icon/next.png"></image>
+    </view>
+  <view class="line"></view>
+    <view wx:if="{{dongminguser.organizationid}}" class="menu-item" bindtap="godatalist">
+      <view class="l">产品详情</view>
+      <image class="next" src="/images/icon/next.png"></image>
+    </view>
+  
+  <view class="space"></view>
+  <view class="menu-item" bindtap="goqiyerenzheng">
+    <view class="l">企业信息</view>
+    <image class="next" src="/images/icon/next.png"></image>
+  </view>
+  <view class="line"></view>
+  <view wx:if="{{guangli}}" class="menu-item" bindtap="goqiyeguanli">
+      <view class="l">企业管理</view>
+      <image class="next" src="/images/icon/next.png"></image>
+  </view>
+  
+  <view class="space"></view>
+  <view class="menu-item" bindtap="aboutUs">
+    <view class="l">关于我们</view>
+    <image class="next" src="/images/icon/next.png"></image>
+  </view>
+  <view class="line"></view>
+  
+  <view class="menu-item" bindtap="clearStorage">
+    <view class="l">清除缓存</view>
+    <image class="next" src="/images/icon/next.png"></image>
+  </view>
+  <view class="line"></view>
+  <view wx:if="{{fyy}}" class="menu-item" bindtap="gofyy">
+    <view class="l">广告位</view>
+    <image class="next" src="/images/icon/next.png"></image>
+  </view>
+
+ 
+</view>
+
+<template is="apifmLogin" data="{{wxlogin: wxlogin}}" />

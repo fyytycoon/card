@@ -1,0 +1,308 @@
+<!--index.wxml-->
+<cu-custom bgColor="bg-gradual-white"><view slot="content">{{userProfile.name}}</view></cu-custom>
+<view class="container" wx:if="{{jiazai}}">
+  <view class='haeder' style="background: linear-gradient(to bottom right, #FFFFFF, #999999)">
+      <view class="section-1">
+          <view class="avatar">
+              <image src="{{userProfile.img}}"></image>
+          </view>
+          <view class="detail">
+            <view class="comp flex1">
+                <image wx:if="{{userProfile.logoimg}}" src="{{userProfile.logoimg}}"></image><text>{{userProfile.organization}}</text>
+            </view>
+            <view class="name flex1">
+                <text> {{userProfile.name}}</text>
+            </view>
+            <view class="comp flex1">
+               <text> {{userProfile.title}}</text>
+            </view>
+          </view>
+      </view>
+      <view class="section-2">
+          <view class="section-2-detail">
+            <view class="loca flex1">
+                <image src="/images/icon/qinglianxiwo.png"></image>  <text> {{userProfile.mobile}}</text>
+            </view>
+            <view class="loca flex1">
+                <image src="/images/youxiang.png"></image>  <text> {{userProfile.email}}</text>
+            </view>
+            <view class="loca flex1" >
+              <view style="display: flex;align-items: center;">
+                <image src="/images/icon/local.png"></image>  
+                <text style="text-overflow: ellipsis;overflow: hidden;white-space: nowrap;display: block;"> {{userProfile.address}}</text>
+              </view>
+            </view>
+            <!-- <view class="loca flex1">
+                <image src="/images/icon/github.png"></image>  <text> {{userProfile.profession}}</text>
+            </view> -->
+          </view>
+        <view class="section-3">
+            <image src="{{userProfile.organizationid == 0?logoimg:''}}"></image>
+        </view>
+      </view>
+  </view>
+  <view style="background-color: white;">
+    <view class="mid">
+      <!--访问量 -->
+      <button class="mini-btn" type="primary" bindtap="setshowShare">分享名片</button>
+      <button class="mini-btn" type="primary" bindtap='addPhoneContact'>存入手机通讯录</button>
+    </view>
+    <!-- 个人资料 -->
+    <view class="p_infor">
+    <!-- HTML的代码 -->
+      <scroll-view class='wrapper' scroll-x="true">
+        <view class='horizontal-scroll' data-v="{{userProfile.mobile}}" bindtap="callPhone">
+            <image src="{{inputValue.shoujiicon}}"></image>
+            <text >拨打电话</text> 
+            <text class="navigator_text" decode="{{true}}">&nbsp;&nbsp;{{userProfile.mobile}}</text>
+        </view>
+        <view class='horizontal-scroll' data-v="{{userProfile.mobile}}" bindtap="copyData"><image src="{{inputValue.weixinicon}}"></image>
+          <text >加我微信</text> 
+          <text class="navigator_text"  decode="{{true}}">&nbsp;&nbsp;{{userProfile.mobile}}</text>
+        </view>
+          
+        <view class='horizontal-scroll-yx' data-v="{{userProfile.email}}" bindtap="copyData"><image src="{{inputValue.youxiangicon}}"></image>
+          <text >邮箱</text> 
+          <text class="navigator_text"  decode="{{true}}">&nbsp;&nbsp;{{userProfile.email}}</text>
+        </view>
+        <view class='horizontal-scroll-dz' bindtap="weizhi"><image src="{{inputValue.dizhiicon}}"></image>
+          <text >地址</text> 
+          <text class="navigator_text"  decode="{{true}}">&nbsp;&nbsp;{{userProfile.address}}</text>
+        </view>
+        <view class='horizontal-scroll' data-v="{{userProfile.zuoji}}" bindtap="callPhone"><image src="{{inputValue.zuojiicon}}"></image>
+          <text >座机</text> 
+          <text class="navigator_text"  decode="{{true}}">&nbsp;&nbsp;{{userProfile.zuoji}}</text>
+        </view>
+      </scroll-view>
+    </view>
+    <!-- 浏览点赞 -->
+    <view class="browse">
+      <view class="action" style="flex: 1;">
+          <view class="cu-avatar-group" style="padding: 0 10rpx 0 20rpx;">
+            <view class="cu-avatar round sm"  wx:for="{{userProfile.likeAvatarUrl}}" wx:key="{{index}}" style="background-image:url({{item.avatarUrl}});"></view>
+          </view>
+          <text class="text-grey text-sm">{{userProfile.lookcount}} 人浏览</text>
+      </view>
+      <view class="content" >
+        <text class="text-grey text-sm" decode="{{true}}">点赞&nbsp;&nbsp;{{dianzancount}}&nbsp;&nbsp;</text>
+        <image class="cu-avatar round sm" style="background-color: white;" src="{{like?icon_like:icon_unlike}}" animation="{{animation}}" bindtap="onLike"></image>
+      </view>
+    </view>
+  </view>
+  
+  
+  <!-- 简介 -->
+  <view class='infor' hidden="{{!userProfile.about}}">
+    <view class='title'>
+      <view class='T'>简介</view>
+      <view>ABOUT</view>
+    </view>
+    <view style="background-color: #fff;border-radius: 10rpx;">
+      <view class="border {{isFold?'hide':''}}">{{userProfile.textarea}}</view>
+      <image class="arrow" src=" {{isFold?'/images/icon/down.png':'/images/icon/up.png'}}" bindtap="showAll"></image>
+    </view>
+  </view>
+  <!-- 产品 -->
+  <view class='infor' hidden="{{!userProfile.product}}">
+    <view class='title'>
+      <view class='T'>产品推荐</view>
+      <view>PRODUCT INFO</view>
+    </view>
+      <view class="cu-card article" wx:for="{{userProfile.productlist}}" wx:key="{{index}}">
+        <view class="cu-item shadow" style="padding: 30rpx;margin: 30rpx 0;">
+          <view class="content" style="padding: 0;" bindtap="godetails" data-id="{{item.value}}">
+            <image src="{{item.pic}}" mode="aspectFill"></image>
+            <view class="desc">
+              <view class="text-content"> {{item.title}}</view>
+              <view>
+                <view class="cu-tag bg-green light sm round">欢迎询价</view>
+              </view>
+            </view>
+          </view>
+        </view>
+      </view>
+  </view>
+
+<!-- 我的企业 -->
+  <view class='infor' hidden="{{!userProfile.qiye}}">
+    <view class='title'>
+      <view class='T'>我的企业</view>
+      <view>ENTERPRISE</view>
+    </view>
+    <view class="cu-card article" >
+        <view class="cu-item shadow" style="padding: 30rpx;margin: 30rpx 0;">
+          <view class="content" style="padding: 0;flex-direction: row;display: flex;align-items: center;justify-content: center;" bindtap="goh5">
+            <image style="width: 150rpx;height: 120rpx;" src="{{userProfile.logoimg}}"></image>
+            <text style="font-size: 32rpx;">{{userProfile.organization}}</text>
+          </view>
+        </view>
+      </view>
+  </view>
+
+<!-- 我的同事 -->
+  <view class='infor' hidden="{{!userProfile.tongshi}}">
+    <view class='title'>
+      <view class='T'>我的同事</view>
+      <view>CO-WORKER</view>
+    </view>
+    <view class="co-worker">
+      <scroll-view class='worker-wrapper' scroll-x="true" >
+        <view class='worker-horizontal-scroll' bindtap="gotongshi" data-id="{{userProfile.tongshilist[index].value}}" wx:for="{{userProfile.tongshilist}}" wx:key="{{index}}">
+            <image src="{{item.img}}"></image>
+            <text class="navigator_text" decode="{{true}}">&nbsp;&nbsp;{{item.title}}</text>
+            <text class="navigator_text" decode="{{true}}">&nbsp;&nbsp;{{item.zhiwei}}</text>
+        </view>
+      </scroll-view>
+    </view>
+  </view>
+
+  <!-- 我的视频 -->
+  <view class='infor' hidden="{{!userProfile.video}}">
+    <view class='title'>
+      <view class='T'>我的视频</view>
+      <view>VIDEO</view>
+    </view>`
+<view class="cu-card case">
+  <view class="cu-item shadow" style="margin: 30rpx 0;">
+    <view class="image">
+      <video 
+      id="myVideo" 
+      src="{{userProfile.videourl}}" 
+      binderror="videoErrorCallback" 
+      show-center-play-btn='false' 
+      show-play-btn="true" 
+      controls
+      picture-in-picture-mode="{{['push', 'pop']}}"
+      bindenterpictureinpicture='bindVideoEnterPictureInPicture'
+      bindleavepictureinpicture='bindVideoLeavePictureInPicture'
+      style="width:90vw;"
+    ></video>
+      <!-- <view class="cu-bar bg-shadeBottom">
+        <text class="text-cut">视频名称</text>
+      </view> -->
+    </view>
+   
+  </view>
+  </view>
+    
+  </view>
+
+  <!-- 我的照片 -->
+  <view class='infor' hidden="{{!userProfile.photo}}">
+    <view class='title'>
+      <view class='T'>我的照片</view>
+      <view>PHOTO ALBUM</view>
+    </view>
+    <view class="cu-card" style="margin-top:30rpx">
+      <view class="bg-img only-img"  wx:for="{{userProfile.imgsList}}" wx:key bindtap="gopreviewImage" id="{{index}}">
+        <image src="{{userProfile.imgsList[index]}}" style="width:100%" mode="widthFix"></image>
+      </view>
+    </view>
+  </view>
+  <!-- 分享 -->
+  <view class="dialog {{ showShareDialog ? 'dialog_show' : '' }}">
+        <view class="dialog-mask2" bindtap="hideDialog"></view>
+        <view class="dialog-fixed dialog-share">
+            <view class="share-wrap">
+                <view class='content'>
+                    <view class="share-block">
+                        <button class='block share-btn' hover-class="none" open-type='share'>
+                            <image class="img" src="/images/icon/weixin.png"></image>
+                            <view class="text">发给好友/发到微信群</view>
+                        </button>
+                        <view class="block" catchtap="onCreatePoster">
+                            <image class="img" src="/images/icon/pyq.png"></image>
+                            <view class="text">保存分享图发朋友圈</view>
+                        </view>
+                    </view>
+                </view>
+            </view>
+            <view class="cancel" bindtap="hideDialog">取消</view>
+        </view>
+  </view>
+  <!-- 右下 -->
+  <view class="cu-chat" wx:if="{{getSett}}">
+    <view class="cu-item self">
+      <view class="main">
+        <view class="content bg-green shadow" wx:if="{{qipaokuang}}">
+          <text>您好!欢迎进入我的名片.有什么可以帮到您的,点击与我沟通.</text>
+        </view>
+      </view>
+      <button class="cu-avatar radius" open-type="getPhoneNumber" bindgetphonenumber="getPhoneNumber" >
+        <image class="coupons-float_image" src="{{userProfile.img}}"></image>
+      </button>
+    </view>
+  </view>
+  <view class="cu-chat" wx:else>
+    <view class="cu-item self">
+      <view class="main">
+        <view class="content bg-green shadow" wx:if="{{qipaokuang}}">
+          <text>您好!欢迎进入我的名片.有什么可以帮到您的,点击与我沟通.</text>
+        </view>
+      </view>
+      <button class="cu-avatar radius" open-type="getUserInfo" bindgetuserinfo="onGetUserInfo" >
+        <image class="coupons-float_image" src="{{userProfile.img}}"></image>
+      </button>
+    </view>
+  </view>
+  <view class="cu-chat" wx:if="{{tygochat}}">
+    <view class="cu-item self">
+      <view class="main">
+        <view class="content bg-green shadow" wx:if="{{qipaokuang}}">
+          <text>您好!欢迎进入我的名片.有什么可以帮到您的,点击与我沟通.</text>
+        </view>
+      </view>
+      <button class="cu-avatar radius" bindtap="gochat" >
+        <image class="coupons-float_image" src="{{userProfile.img}}"></image>
+      </button>
+    </view>
+  </view>
+</view>
+<view class="loading" style="height:404px" wx:else>
+    <image class="img" src="/images/icon/loading2.gif"></image>
+</view>
+
+<!-- 分享图 -->
+<poster id="poster" config="{{posterConfig}}" bind:success="onPosterSuccess" bind:fail="onPosterFail"></poster>
+<view wx:if="{{showposterImg}}" class="popup-mask"></view>
+<view wx:if="{{showposterImg}}" class="posterImg-box" >
+  <image mode="widthFix" class="posterImg" src="{{posterImg}}" bindtap="previewImage"></image>
+  <view class="btn-create" bindtap="savePosterPic">保存到相册</view>
+  <view class="btn-create1" bindtap="xiaoqu">取消</view>
+</view>
+
+<!-- 授权弹框 -->
+<view class="cu-modal {{modalName=='DialogModal1'?'show':''}}">
+  <view class="cu-dialog">
+    <view class="cu-bar bg-white justify-end">
+      <!-- <view class="content">Modal标题</view> -->
+      <view class="action" bindtap="hideModal">
+        <text class="cuIcon-close text-red"></text>
+      </view>
+    </view>
+    <view class="padding-xl">
+      为了舒适体验可及时收到回复通知,请同意获取授权
+    </view>
+    <view class="cu-bar bg-white justify-end">
+      <view class="action">
+        <button class="cu-btn line-green text-green" bindtap="hideModal">拒绝</button>
+        <button class="cu-btn bg-green margin-left" open-type="getPhoneNumber" bindgetphonenumber="getPhoneNumber">同意</button>
+
+      </view>
+    </view>
+  </view>
+</view>
+
+<!-- 广告位 -->
+<view class="cu-modal {{modalName=='Image'?'show':''}}">
+  <view class="cu-dialog">
+    <view class="bg-img" bindtap="goguanggao">
+      <image src="{{guanggaowei}}" style="width:100%" mode="aspectFit"></image>
+    </view>
+    <view class="cu-bar bg-white">
+      <view class="action margin-0 flex-sub  solid-left" bindtap="hideModal">我知道了</view>
+    </view>
+  </view>
+</view>
+<wux-dialog id="wux-dialog" />
+<wux-dialog id="wux-dialog--alert" />

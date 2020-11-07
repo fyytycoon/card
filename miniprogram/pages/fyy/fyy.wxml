@@ -1,0 +1,17 @@
+<!--miniprogram/pages/fyy/fyy.wxml-->
+<cu-custom bgColor="bg-gradual-white" isCustom="{{true}}">
+	<view slot="content">广告位</view>
+</cu-custom>
+<view class="cu-bar bg-white margin-top" wx:for="{{swiperList}}" wx:key wx:for-index="idx">
+  <view class="action">
+    <text class="cuIcon-title text-orange "></text> {{item.id}}
+  </view>
+  <view class="cu-form-group">
+    <button class="cu-btn round bg-red shadow" bindtap="showModal" data-target="{{idx}}" style="margin-left: 5px">删除</button>
+  </view>
+</view>
+<view class="no-order" hidden="{{swiperList.length == 0 ? false : true}}">
+    <image src="/images/no-order.png" class="no-order-img"></image>
+    <view class="text">暂无广告</view>
+</view>
+<button class='cu-btn round bg-green shadow' bindtap="gotonewform" style="right: 42vw;display: flex;position: fixed;justify-content: center;bottom:80rpx;">新增</button>

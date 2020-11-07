@@ -1,0 +1,136 @@
+<cu-custom bgColor="bg-gradual-white" isCustom="{{true}}">
+	<view slot="content">商品详情</view>
+</cu-custom>
+<view class="container" wx:if="{{loading == 1}}"> 
+   <view class="swiper-container">
+      <swiperImg sHeight="748rpx" imgList="{{goodsDetail.pics}}" url="pic"></swiperImg>
+   </view>
+   <view class='info-wrap'>
+        <view class='l'>
+            <view class='goods-title'>{{goodsDetail.name}}</view>
+            <view class='goods-intro'></view>
+        </view>
+        <view class='r'>
+            <view bindtap="shareTo" class='share'>
+                <image class='icon' src='/images/icon/share.png'></image>
+                <view class='text'>分享</view>
+            </view>
+        </view>
+    </view>
+    <view class='price-info'>
+        <view class="l">
+            <view class="now-price">
+                <view class="sym">¥</view>
+                <view class="num">{{goodsDetail.minPrice}}</view>
+            </view>
+        </view>
+        <!-- <view class="r">
+            <view class='stock'>{{goodsDetail.numberlook}}次浏览</view>
+        </view> -->
+    </view>
+   
+    <view class="goods-des-info">
+        <view class="label-title">商品介绍</view>
+        <view wx:for="{{goodsDetail.xijieimgList}}" wx:key bindtap="gopreviewImage" id="{{index}}">
+          <image src="{{goodsDetail.xijieimgList[index]}}" style="width:100%" mode="widthFix"></image>
+        </view>
+         
+    </view>
+    <!-- 分享 -->
+    <view class="dialog {{ showShareDialog ? 'dialog_show' : '' }}">
+        <view class="dialog-mask2" bindtap="hideDialog"></view>
+        <view class="dialog-fixed dialog-share">
+            <view class="share-wrap">
+                <view class='content'>
+                    <view class="share-block">
+                        <button class='block share-btn' hover-class="none" open-type='share'>
+                            <image class="img" src="/images/icon/weixin.png"></image>
+                            <view class="text">发给好友/发到微信群</view>
+                        </button>
+                        <view class="block" catchtap="onCreatePoster">
+                            <image class="img" src="/images/icon/pyq.png"></image>
+                            <view class="text">保存分享图发朋友圈</view>
+                        </view>
+                    </view>
+                </view>
+            </view>
+            <view class="cancel" bindtap="hideDialog">取消</view>
+        </view>
+    </view>
+    <!-- 底部 -->
+    
+    <view class="footer-box" wx:if="{{getSett}}">
+      <view class="contact">
+      <button bindtap="goindex" />
+        <image src="/images/icon/zhuye.png"></image>
+      </view>
+        <button class="now-buy" open-type="getPhoneNumber" bindgetphonenumber="getPhoneNumber" data-id="1">线上咨询</button>
+    </view>
+    <view class="footer-box" wx:else>
+      <view class="contact">
+      <button bindtap="goindex" />
+        <image src="/images/icon/zhuye.png"></image>
+      </view>
+        <button class="now-buy" open-type="getUserInfo" bindgetuserinfo="onGetUserInfo">线上咨询</button>
+   </view>
+   <view class="footer-box" wx:if="{{tygochat}}">
+    <view class="contact">
+      <button bindtap="goindex" />
+      <image src="/images/icon/zhuye.png"></image>
+    </view>
+        <button class="now-buy" bindtap="gochat">线上咨询</button>
+   </view>
+   
+</view>
+<view class="loading" style="height:404px" wx:else>
+    <image class="img" src="/images/icon/loading.gif"></image>
+</view>
+
+<poster id="poster" config="{{posterConfig}}" bind:success="onPosterSuccess" bind:fail="onPosterFail"></poster>
+<view wx:if="{{showposterImg}}" class="popup-mask"></view>
+<view wx:if="{{showposterImg}}" class="posterImg-box" >
+  <image mode="widthFix" class="posterImg" src="{{posterImg}}" bindtap="previewImage"></image>
+  <view class="btn-create" bindtap="savePosterPic">保存到相册</view>
+  <view class="btn-create1" bindtap="xiaoqu">取消</view>
+</view>
+
+<!-- 授权弹框 -->
+<view class="cu-modal {{modalName=='DialogModal'?'show':''}}">
+  <view class="cu-dialog">
+    <view class="cu-bar bg-white justify-end">
+      <!-- <view class="content">Modal标题</view> -->
+      <view class="action" bindtap="hideModal">
+        <text class="cuIcon-close text-red"></text>
+      </view>
+    </view>
+    <view class="padding-xl">
+      为了舒适体验可及时收到回复通知,请同意获取授权
+    </view>
+    <view class="cu-bar bg-white justify-end">
+      <view class="action">
+        <button class="cu-btn line-green text-green" bindtap="hideModal">拒绝</button>
+        <button class="cu-btn bg-green margin-left" open-type="getPhoneNumber" bindgetphonenumber="getPhoneNumber">同意</button>
+      </view>
+    </view>
+  </view>
+</view>
+<!-- 授权弹框1 -->
+<view class="cu-modal {{modalName=='DialogModal1'?'show':''}}">
+  <view class="cu-dialog">
+    <view class="cu-bar bg-white justify-end">
+      <!-- <view class="content">Modal标题</view> -->
+      <view class="action" bindtap="hideModal">
+        <text class="cuIcon-close text-red"></text>
+      </view>
+    </view>
+    <view class="padding-xl">
+      为了舒适体验可及时收到回复通知,请同意获取授权
+    </view>
+    <view class="cu-bar bg-white justify-end">
+      <view class="action">
+        <button class="cu-btn line-green text-green" bindtap="hideModal">拒绝</button>
+        <button class="cu-btn bg-green margin-left" open-type="getPhoneNumber" bindgetphonenumber="getPhoneNumber1">同意</button>
+      </view>
+    </view>
+  </view>
+</view>

@@ -1,0 +1,2 @@
+<!--miniprogram/pages/gongzhonghao/gongzhonghao.wxml-->
+<web-view src="{{gzhid}}"></web-view>

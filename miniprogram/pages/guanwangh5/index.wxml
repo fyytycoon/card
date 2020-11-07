@@ -1,0 +1,68 @@
+<!--miniprogram/pages/guanwnagh5/index.wxml-->
+<cu-custom bgColor="bg-gradual-white" isBack="{{true}}">
+  <view slot="backText">返回</view>
+  <view slot="content">官网</view>
+</cu-custom>
+<view wx:if="{{jiazai}}">
+  <swiper class="screen-swiper square-dot" indicator-dots="true" circular="true" autoplay="true" interval="5000" duration="500">
+    <swiper-item wx:for="{{guanwang.swiperList}}" wx:key bindtap="gopreviewMedia" data-id="{{index}}">
+      <image src="{{item.url}}" mode="aspectFill" wx:if="{{item.type=='image'}}"></image>
+      <video src="{{item.url}}" autoplay loop muted show-play-btn="{{false}}" controls="{{false}}" objectFit="cover" wx:if="{{item.type=='video'}}"></video>
+    </swiper-item>
+  </swiper>
+  <view class="cu-bar bg-white margin-top solid-bottom">
+    <view class="action">
+      <text class="cuIcon-title text-orange"></text> 公司介绍
+    </view>
+  </view>
+  <swiper class="card-swiper square-dot" indicator-dots="true" circular="true" autoplay="true" interval="5000" duration="500" bindchange="cardSwiper" indicator-color="#8799a3" indicator-active-color="#0081ff">
+    <swiper-item wx:for="{{guanwang.headswiperList}}" wx:key class="{{cardCur==index?'cur':''}}">
+      <view class="swiper-item">
+        <image src="{{item.url}}" mode="aspectFill" wx:if="{{item.type=='image'}}"></image>
+        <video src="{{item.url}}" autoplay loop muted show-play-btn="{{false}}" controls="{{false}}" objectFit="cover" wx:if="{{item.type=='video'}}"></video>
+      </view>
+    </swiper-item>
+  </swiper>
+  <view class="padding bg-white">
+    <text class="text-left padding" decode="{{true}}">&nbsp;&nbsp;{{guanwang.gsjs}}</text>
+  </view>
+  <view class="cu-bar bg-white margin-top">
+    <view class="action">
+      <text class="cuIcon-title text-orange"></text> 企业咨询
+    </view>
+  </view>
+  <view class="cu-card article" >
+    <view class="cu-item shadow" wx:for="{{guanwang.qiyezixun}}" wx:key data-id="{{index}}" bindtap="gogzh" style="margin:30rpx 30rpx 0 30rpx;">
+      <view class="title">
+        <view class="text-cut">{{item.title}}</view>
+      </view>
+      <view class="content">
+        <image src="{{item.img}}" mode="aspectFill"></image>
+        <view class="desc">
+          <view class="text-content"> {{item.content}}</view>
+        </view>
+      </view>
+    </view>
+  </view>
+  <view class="cu-card article">
+    <view class="cu-bar bg-white solid-bottom margin-top">
+      <view class="action">
+        <text class="cuIcon-title text-orange"></text>联系我们
+      </view>
+    </view>
+  <view class="cu-item shadow" style="padding:0">
+    <map class="map" latitude="{{guanwang.markers[0].latitude}}" longitude="{{guanwang.markers[0].longitude}}" markers="{{guanwang.markers}}" show-location="{{true}}" scale="16" bindtap="weizhi" enable-3D="{{true}}"></map>
+  </view>
+  <view class="cu-form-group" style="margin: 0 30rpx 30rpx 30rpx;">
+		<view class="title">{{guanwang.name}}</view>
+		<button class="cu-btn bg-green shadow" bindtap="weizhi">导航</button>
+  </view>
+  <view class="cu-form-group" style="margin: 0 30rpx 30rpx 30rpx;">
+		<view class="title">{{guanwang.call}}</view>
+		<button class="cu-btn bg-green shadow" bindtap="call">拨打</button>
+  </view>
+  </view>
+</view>
+<view class="loading" style="height:404px" wx:else>
+    <image class="img" src="/images/icon/loading.gif"></image>
+</view>

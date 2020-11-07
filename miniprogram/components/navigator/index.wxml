@@ -1,0 +1,11 @@
+<!-- 自定义tab标签组件-->
+<!-- 标题列表-->
+<scroll-view scroll-x="true" class="scroll-view-x" wx:if="{{!ttype || ttype==2}}" style="top:{{CustomBar}}px">
+  <view  class="scroll-view-item" wx:for="{{tList}}" wx:key="*this">
+    <view class="{{currentTab==(index) ? 'on' : ''}}" bindtap="_swichNav" data-current="{{index}}">{{ !tname ? item.name : item[tname].name }}</view>
+  </view>
+</scroll-view>
+<image class="img" src='/images/find.png ' bindtap="goSearch" style="top:{{CustomBar+5}}px"></image>
+<!--内容列表-->
+<slot>
+</slot>

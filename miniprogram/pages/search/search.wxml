@@ -1,0 +1,42 @@
+<cu-custom bgColor="bg-gradual-white" isBack="{{true}}" style="background: #fff;"><view slot="backText">返回</view><view slot="content">搜索</view></cu-custom>
+<scroll-view class="container" style="height: 100%;">
+    <view class="search-header">
+        <view class="input-box">
+            <image class="icon-search" src="/images/icon/search.png"></image>
+            <input name="input" class="keywrod" focus="true" value="{{keyword}}" confirm-type="search" bindinput="inputChange" bindfocus="inputFocus" bindconfirm="onKeywordConfirm" confirm-type="search" placeholder="{{defaultKeyword.keyword}}" />
+            <image src="/images/icon/search-dele.png" class="del" wx:if="{{keyword}}" bindtap="clearKeyword"></image>
+        </view>
+        <view class="right" bindtap="closeSearch">取消</view>
+    </view>
+
+    <view class="search-result" wx:if="{{ searchStatus && goodsList.length}}">
+        <view class="cate-item">
+            <view class="b">
+                <view class='list-wrap clearfix'>
+                    <view class="goods-box {{(iindex+1)%2 == 0?'no-margin':''}}" wx:for="{{goodsList}}" wx:for-index="iindex" wx:for-item="iitem" wx:key="id">
+                        <navigator hover-class='none' class='navi-url' url="/pages/goods-details/index?id={{iitem._id}}">
+                            <view class="box">
+                                <image src="{{iitem.pic}}" class="image">
+                                </image>
+                            </view>
+                            <view class="goods-info {{iitem.goods_number == 0?'fast-out-status':''}}">
+                                <view class="goods-title">{{iitem.name}}</view>
+                                <view class='price-container'>
+                                    <view class='l'>
+                                        <view class='h'>￥{{iitem.minPrice}}</view>
+                                    </view>
+                                </view>
+                            </view>
+                        </navigator>
+                    </view>
+                </view>
+            </view>
+        </view>
+        <view class='no-more'>没有更多商品了</view>
+    </view>
+
+    <view class="search-result-empty" wx:if="{{!goodsList.length && searchStatus}}">
+        <image class="icon" src="/images/icon/no-search.png"></image>
+        <text class="text">没找到，换个关键字试试</text>
+    </view>
+</scroll-view>
