@@ -7,7 +7,7 @@ App({
       console.error('请使用 2.2.3 或以上的基础库以使用云能力')
     } else {
       wx.cloud.init({
-        env: 'dongmingqibao-xxxxx',
+        env: 'card-9gulb8m1e94ba7fe',
         traceUser: true,
       })
     }
@@ -192,11 +192,11 @@ App({
                     })
                     
                     if(res1.data[0].organizationid == ''){
-                      console.log('未绑定企业',res1.data[0].organizationid)
+                      console.log('未绑定企业',res1.data)
                     }else{
                       console.log('已绑定企业',res1.data[0].organizationid)
                       var _onejifenleilist=[],dengji = 1,_erjilist = [];
-                      wx.cloud.database().collection('productfenlei').where({ organizationid:res1.data[0].organizationid }).get().then(res => {
+                      wx.cloud.database().collection('productfenlei').where({ organizationid:"d6b130aa5f9d0a47000385cf4ef2084d" }).get().then(res => {
                         console.log('管理员分类=>',res.data)
                         //选出一级分类，放入 _onejifenleilist
                         for (var x in res.data) {

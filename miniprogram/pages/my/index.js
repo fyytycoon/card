@@ -28,7 +28,7 @@ Page({
       iscarduser:app.globalData.dongminguser.iscarduser,
       dongminguser:app.globalData.dongminguser
     })
-    if(wx.getStorageSync('openid') == 'oDmvK5el0YsVj0sLiqTFB7yuT1eI'){
+    if(wx.getStorageSync('openid') == 'oDmvK5el0Ys1Vj0sLiqTFB7yuT1eI'){
       that.setData({
         fyy:true,
       })
@@ -136,7 +136,7 @@ Page({
   aboutUs : function () {
     wx.showModal({
       title: '关于我们',
-      content: '太原东明技术支持',
+      content: 'xxx技术支持',
       showCancel:false
     })
   },
