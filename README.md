@@ -19,7 +19,7 @@ app.js
 
 ```
 wx.cloud.init({
-    env: 'dongmingqibao-xxoo',
+    env: 'xxx-xxoo',
     traceUser: true,
 })
 ```
