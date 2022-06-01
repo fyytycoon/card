@@ -39,3 +39,4 @@ wx.cloud.init({
 此小程序借助于`colorui`、`wuxui`组件封装，仅供学习参考。喜欢就动手点个star吧~^o^~
 
 如需帮助，请添加wx:`wind-rain-sun`。
+

@@ -1,22 +1,22 @@
-
+/**产品**/
 {
     "_id": "5ddc1fbd5f2f755e00409a3c046bdaba",
     "dateUpdate": "2020-11-23 08:48:03",
     "dateAdd": "2020-08-09 12:02:35",
-    "oneindex": "0",
-    "categoryId": "f47f682c5f1791c00058548d19ba010c",
-    "pic": "cloud://xxx.646f-xxx-1304037825/product/oDmvK5el0YsVj0sLiqTFB7yuT1eI/e3da9c8f3.jpg",
+    "oneindex": "0",//一级分类
+    "categoryId": "f47f682c5f1791c00058548d19ba010c",//二级分类ID
+    "pic": "cloud://xxx.646f-xxx-1304037825/product/oDmvK5el0YsVj0sLiqTFB7yuT1eI/e3da9c8f3.jpg",//产品图
     "numberlook": 0,
     "name": "ML-2035",
-    "erjiindex": "1",
+    "erjiindex": "1",//二级分类
     "minPrice": "价格面议",
-    "categoryoneId": "15d399db5f141a71002fafb05fe9b092",
+    "categoryoneId": "15d399db5f141a71002fafb05fe9b092",//一级分类ID
     "pics": [
         "cloud://xxx.646f-xxx-1304037825/product/oDmvK5el0YsVj0sLiqTFB7yuT1eI/e3da9c8f3.jpg"
-    ],
+    ],//产品图轮播
     "xijieimgList": [
         "cloud://xxx.646f-xxx-1304037825/product/oDmvK5el0YsVj0sLiqTFB7yuT1eI/9caeac96b.jpg"
-    ],
+    ],//详情图
     "organizationid": "d6b130aa5f9d0a47000385cf4ef2084d",
     "flag": true
 }

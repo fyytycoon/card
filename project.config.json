@@ -26,8 +26,8 @@
     "packNpmRelationList": [],
     "minifyWXSS": true
   },
-  "appid": "wx34a98e2fdb4a133c",
-  "projectname": "%E6%AD%A3%E5%BC%8Fdongmingqibao",
+  "appid": "wxcaee4ae895dfe2f2",
+  "projectname": "card",
   "libVersion": "2.13.2",
   "simulatorType": "wechat",
   "simulatorPluginLibVersion": {},

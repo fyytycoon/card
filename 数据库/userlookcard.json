@@ -1,2 +1,20 @@
-
-{"_id":"cbddf0af609deb2708494e22584e6962","nick_name":"微信用户","gender":0,"language":"","city":"","province":"","avatar_url":"https://thirdwx.qlogo.cn/mmopen/vi_32/POgEwh4mIHO4nibH0KlMECNjjGxQUq24ZEaGT4poC6icRiccVGKSyXwibcPq4BWmiaIGuG1icwxaQX6grC9VemZoJ8rg/132","country":"","createTime":"2021-05-14 11:14:44","_openid":"oDmvK5YKbDSPcB8Ac6MH11ILdgG0","cardopenid":"oDmvK5cIn3_0VAxLVr7DyJDgh6bk","cardname":"xx","cardorganization":"xxx有限公司","cardtitle":"CEO","cardimg":"cloud://xxx.646f-xxx-1304037825/dongming/oDmvK5cIn3_0VAxLVr7DyJDgh6bk/dfa37fa2d.jpg","like":false,"phone":""}
+/**浏览记录**/
+{
+    "_id": "cbddf0af609deb2708494e22584e6962",
+    "nick_name": "微信用户",
+    "gender": 0,
+    "language": "",
+    "city": "",
+    "province": "",
+    "avatar_url": "https://thirdwx.qlogo.cn/mmopen/vi_32/POgEwh4mIHO4nibH0KlMECNjjGxQUq24ZEaGT4poC6icRiccVGKSyXwibcPq4BWmiaIGuG1icwxaQX6grC9VemZoJ8rg/132",
+    "country": "",
+    "createTime": "2021-05-14 11:14:44",
+    "_openid": "oDmvK5YKbDSPcB8Ac6MH11ILdgG0",
+    "cardopenid": "oDmvK5cIn3_0VAxLVr7DyJDgh6bk",
+    "cardname": "xx",
+    "cardorganization": "xxx有限公司",
+    "cardtitle": "CEO",
+    "cardimg": "cloud://xxx.646f-xxx-1304037825/dongming/oDmvK5cIn3_0VAxLVr7DyJDgh6bk/dfa37fa2d.jpg",
+    "like": false,//是否点赞
+    "phone": ""
+}

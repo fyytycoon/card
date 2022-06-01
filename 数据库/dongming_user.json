@@ -1,2 +1,27 @@
-
-{"_id":"d232df4c5f9b86bc00013bda280870e8","brand":"devtools","mobile":"","nick_name":"喝醉的xoxo马","relationId":"1604028092355oDmvK5el0YsVj0sLiqTFB7yuT1eI","avatar_url":"https://thirdwx.qlogo.cn/mmopen/vi_32/Q0j4TwGTfTKYymoZiaibn7gcqDtOJhd3N5ocKJiblglrm3jsoDibgdicJWicMGRS6LHJUAEP8PHicNch9q2Bh1Ae94kwQ/132","city":"Abiko-shi","country":"JP","createTime":"2020-10-30 11:21:32","lookcardlast":"oDmvK5el0YsVj0sLiqTFB7yuT1eI","sessionkey":"","version":"7.0.4","model":"iPhone 5","weChat":"","_openid":"oDmvK5el0YsVj0sLiqTFB7yuT1eI","dz":-1.0,"gender":1.0,"iscarduser":true,"language":"zh_CN","organization":"xxxx","organizationid":"d6b130aa5f9d0a47000385cf4ef2084d","phone":"15698000841","province":"Chiba-ken","system":"iOS 10.0.1","localStorageTime":"2021-11-15 12:17:20"}
+{
+    "_id": "d232df4c5f9b86bc00013bda280870e8",
+    "brand": "devtools",
+    "mobile": "",
+    "nick_name": "喝醉的xoxo马",
+    "relationId": "1604028092355oDmvK5el0YsVj0sLiqTFB7yuT1eI",
+    "avatar_url": "https://thirdwx.qlogo.cn/mmopen/vi_32/Q0j4TwGTfTKYymoZiaibn7gcqDtOJhd3N5ocKJiblglrm3jsoDibgdicJWicMGRS6LHJUAEP8PHicNch9q2Bh1Ae94kwQ/132",
+    "city": "Abiko-shi",
+    "country": "JP",
+    "createTime": "2020-10-30 11:21:32",
+    "lookcardlast": "oDmvK5el0YsVj0sLiqTFB7yuT1eI",//最近浏览cardID
+    "sessionkey": "",
+    "version": "7.0.4",
+    "model": "iPhone 5",
+    "weChat": "",
+    "_openid": "oDmvK5el0YsVj0sLiqTFB7yuT1eI",
+    "dz": -1.0,
+    "gender": 1.0,
+    "iscarduser": true,//是否有card
+    "language": "zh_CN",
+    "organization": "xxxx",
+    "organizationid": "d6b130aa5f9d0a47000385cf4ef2084d",
+    "phone": "15698000841",
+    "province": "Chiba-ken",
+    "system": "iOS 10.0.1",
+    "localStorageTime": "2021-11-15 12:17:20"
+}

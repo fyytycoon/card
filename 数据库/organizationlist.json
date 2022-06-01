@@ -1,2 +1,18 @@
-
-{"_id":"d6b130aa5f9d0a47000385cf4ef2084d","_openid":"oDmvK5el0YsVj0sLiqTFB7yuT1eI","name":"xxx有限公司","zuoji":"0351-7875999","address":"","linkmanphone":"15698000841","latitude":37.760741,"longitude":112.653195,"setimgList":[""],"setlogoimgList":[""],"dz":true}
+/**企业列表**/
+{
+    "_id": "d6b130aa5f9d0a47000385cf4ef2084d",
+    "_openid": "oDmvK5el0YsVj0sLiqTFB7yuT1eI",//创建人
+    "name": "xxx有限公司",
+    "zuoji": "0351-7875999",
+    "address": "",
+    "linkmanphone": "15698000841",
+    "latitude": 37.760741,
+    "longitude": 112.653195,
+    "setimgList": [
+        ""
+    ],
+    "setlogoimgList": [
+        ""
+    ],
+    "dz": true//是否启用
+}
