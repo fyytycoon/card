@@ -15,7 +15,7 @@ Page({
     isFold: true,//简介展开
     modalName:'',
     guanggaoweilist:[],
-
+    buttonClicked: false,//重复点击
     userProfile:{},
     inputValue:{
       shoujiicon: "/images/cell.png ",
@@ -55,6 +55,10 @@ Page({
             that.setData({
               phone: app.globalData.dongminguser.phone,
             })
+          }else{
+            that.setData({
+              phone: app.globalData.dongminguser.phone,
+            })
           }
           that.shouquan()
         }  
@@ -66,8 +70,13 @@ Page({
             dianzancount: app.globalData.userProfile.dianzancount,
             like:app.globalData.like,
             jiazai:true,
+            text:app.globalData.userProfile.textarea.replace(/&/g,'\n')
           })
           if(!app.globalData.dongminguser){
+            that.setData({
+              phone: app.globalData.dongminguser.phone,
+            })
+          }else{
             that.setData({
               phone: app.globalData.dongminguser.phone,
             })
@@ -91,15 +100,26 @@ Page({
               wx.cloud.database().collection('carduser_list').where({ _openid: options.id }).get().then(res3 => {
                 wx.cloud.database().collection('productfenlei').where({ organizationid:res3.data[0].organizationid }).get().then(res5 => {
                   app.globalData.data.fenleilist = res5.data
-                  this.getTlist()
+                  that.getTlist()
                 })
-                this.setData({
+                that.setData({
                   userProfile: res3.data[0],
                   nowopenid: options.id,
                   dianzancount: res3.data[0].dianzancount,
                   jiazai:true
                 })
                 app.globalData.userProfile=res3.data[0]
+                wx.cloud.database().collection('userlookcard').where({ _openid: res.result.openid,cardopenid: options.id }).get().then(res6 => {
+                  if(res6.data.length !== 0){
+                    that.setData({
+                      like: res6.data[0].like
+                    })
+                  }else{
+                    that.setData({
+                      like: false
+                    })
+                  }
+                })
               })
             }
           })
@@ -109,7 +129,6 @@ Page({
         app.userInfoReadyCallback = res => {
           console.log('[index.js]获取[app.js]用户信息 ',res)
           that.setData({
-            like:app.globalData.like,
             phone: app.globalData.dongminguser.phone
           })
           that.shouquan()
@@ -117,12 +136,20 @@ Page({
       }else{
         console.log('[index.js]获取k')
         that.setData({
-          like:app.globalData.like,
           phone: app.globalData.dongminguser.phone
         })
         that.shouquan()
       }
     }
+    // 调用监听器，监听数据变化
+    app.watch(that, {
+      userProfile: function (newVal) {
+        console.log('数据监听=>')
+        that.setData({
+          text:newVal.textarea.replace(/&/g,'\n')
+        })
+      }
+    })
   },
   onShow: function(e){
     var that = this
@@ -182,6 +209,7 @@ Page({
   },
 
   goh5(){
+    util.buttonClicked(this);
     wx.cloud.database().collection('guanwang').where({organizationid:app.globalData.userProfile.organizationid}).get().then(res => {
       if(!res.data.length == 0){
         wx.setStorageSync("guanwang", res.data[0]);
@@ -195,6 +223,7 @@ Page({
   //定时器
   settime(){
     var num =  Math.floor(Math.random()*2)
+    console.log(num)
     if(num == 1){
       this.setData({
         modalName:'Image'
@@ -304,7 +333,7 @@ Page({
         this.setData({
           animation: this.animation.export()
         });
-      }.bind(this), 50);
+      }.bind(this),50);
     }
     that.setData({
       dianzancount:dianzan,
@@ -313,47 +342,22 @@ Page({
     //浏览记录
     wx.cloud.database().collection('userlookcard').where({ _openid: wx.getStorageSync('openid'),cardopenid:that.data.nowopenid }).get().then(res1 => {
       if(res1.data.length !== 0){
-        wx.cloud.callFunction({
-          // 云函数名称
-          name: 'updatelike',
-          // 传给云函数的参数
-          data: {
-            openid:wx.getStorageSync('openid'),
-            dianzancount:that.data.dianzancount,//点赞次数
-            like:that.data.like,
-            nowopenid:that.data.nowopenid
-          },
-          complete: res => {
-            console.log('[index.js][updatelooklike-updated] [over]=>', res)
-          }
-        })
+        
       }
     })
-  },
-
-  prompt() {
-    const alert = (content) => {
-        $wuxDialog('#wux-dialog--alert').alert({
-            resetOnClose: true,
-            title: '提示',
-            content: content,
-        })
-    }
-
-    $wuxDialog().prompt({
-        resetOnClose: true,
-        title: '提示',
-        content: '密码为8位数字',
-        fieldtype: 'number',
-        password: !0,
-        defaultText: '',
-        placeholder: '请输入Wi-Fi密码',
-        maxlength: 20,
-        openType:share,
-        onConfirm(e, response) {
-            const content = response.length === 8 ? `Wi-Fi密码到手了: ${response}` : `请输入正确的Wi-Fi密码`
-            alert(content)
-        },
+    wx.cloud.callFunction({
+      // 云函数名称 
+      name: 'updatelike',
+      // 传给云函数的参数
+      data: {
+        openid:wx.getStorageSync('openid'),
+        dianzancount:that.data.dianzancount,//点赞次数
+        like:that.data.like,
+        nowopenid:that.data.nowopenid
+      },
+      complete: res => {
+        console.log('[index.js][updatelooklike-updated] [over]=>', res)
+      }
     })
   },
 
@@ -389,6 +393,14 @@ Page({
   //海报
   drawSharePicDone(picHeight, qrcode,img) {
     const _this = this
+    var text = _this.data.userProfile.organization + _this.data.userProfile.name
+    if(_this.data.userProfile.organizationid == 'd6b130aa5f9d0a47000385cf4ef2084d' & _this.data.userProfile.fenxiaoshang == false){
+      if(_this.data.userProfile._openid == 'oDmvK5cIn3_0VAxLVr7DyJDgh6bk'){
+        text = '太原东明汽保'
+      }else{
+        text = '太原东明汽保' + _this.data.userProfile.name
+      }
+    }
     const _baseHeight = 74 + (picHeight + 120)
     this.setData({
       posterConfig: {
@@ -425,11 +437,21 @@ Page({
         ],
         texts: [
           {
-            x: 375,
+            x: 75,
             y: _baseHeight + 80,
             width: 650,
             lineNum:2,
-            text: '你好，我是'+_this.data.userProfile.organization+'的'+_this.data.userProfile.title+_this.data.userProfile.name,
+            text: '您好:',
+            textAlign: 'left',
+            fontSize: 40,
+            color: '#333'
+          },
+          {
+            x: 390,
+            y: _baseHeight + 120,
+            width: 480,
+            lineNum:2,
+            text: text+'欢迎您！',
             textAlign: 'center',
             fontSize: 40,
             color: '#333'
@@ -588,17 +610,23 @@ Page({
   // 分享转发
   onShareAppMessage(res) {
     var that = this;
+    var text = that.data.userProfile.organization + that.data.userProfile.name
+    if(that.data.userProfile.organizationid == 'd6b130aa5f9d0a47000385cf4ef2084d' & that.data.userProfile.fenxiaoshang == false){
+      if(that.data.userProfile._openid == 'oDmvK5cIn3_0VAxLVr7DyJDgh6bk'){
+        text = '太原东明汽保'
+      }else{
+        text = '太原东明汽保' + that.data.userProfile.name
+      }
+    }
     that.setData({
       showShareDialog: false,
     });
-
     // 转发在群聊中被其他用户打开时，能使用这个小程序查看信息
     wx.showShareMenu({
       withShareTicket: true
     })
-
     return {
-      title: '你好，我是'+_this.data.userProfile.organization+'的'+that.data.userProfile.title+that.data.userProfile.name,
+      title: '您好，' + text + '欢迎您！',
       path: '/pages/index/index?id='+this.data.nowopenid
     }
   },
@@ -666,106 +694,101 @@ Page({
   },
 
   //授权信息
-  onGetUserInfo: function(e){
-    var that = this
-    console.log('当前浏览openid',that.data.nowopenid)
-    wx.getSetting({
-      success: res1 => {
-        if (res1.authSetting['scope.userInfo'] ) {
-          console.log('已授权')
-          that.setData({
-            modalName:"DialogModal1"
-          })
-          //浏览记录
-          wx.cloud.database().collection('userlookcard').where({ _openid: wx.getStorageSync('openid'),cardopenid:that.data.nowopenid }).get().then(res1 => {
-            if(res1.data.length == 0){
-              console.log('无浏览记录')
+  getUserProfile: function(){
+    wx.getUserProfile({
+      desc: '用于完善会员资料', // 声明获取用户个人信息后的用途，后续会展示在弹窗中，请谨慎填写
+      success: (e) => {
+        app.globalData.dongminguser = e.userInfo;
+        console.log(app.globalData.dongminguser)
+        var that = this
+        console.log('当前浏览openid',that.data.nowopenid,e)
+        wx.getSetting({
+          success: res1 => {
+            if (res1.authSetting['scope.userInfo'] ) {
+              console.log('已授权')
+              that.setData({
+                modalName:"DialogModal1"
+              })
+              //浏览记录
+              wx.cloud.database().collection('userlookcard').where({ _openid: wx.getStorageSync('openid'),cardopenid:that.data.nowopenid }).get().then(res1 => {
+                if(res1.data.length == 0){
+                  console.log('无浏览记录')
+                }
+              })
               let lookcount = this.data.userProfile.lookcount + 1
-              if(that.data.userProfile.likeAvatarUrl.length > 5){
-                that.data.userProfile.likeAvatarUrl.splice(0, that.data.userProfile.likeAvatarUrl.length-5)
-              }
+                  if(that.data.userProfile.likeAvatarUrl.length > 5){
+                    that.data.userProfile.likeAvatarUrl.splice(0, that.data.userProfile.likeAvatarUrl.length-5)
+                  }
+                  wx.cloud.callFunction({
+                    // 云函数名称
+                    name: 'userlookcard',
+                    // 传给云函数的参数
+                    data: {
+                      nick_name: e.userInfo.nickName,
+                      gender: e.userInfo.gender,
+                      language: e.userInfo.language,
+                      city: e.userInfo.city,
+                      province: e.userInfo.province,
+                      avatar_url: e.userInfo.avatarUrl,
+                      country: e.userInfo.country,
+                      openid: wx.getStorageSync('openid'),
+                      createTime: util.formatTime(new Date()),
+                      cardopenid:that.data.nowopenid,
+                      cardname:that.data.userProfile.name,
+                      cardorganization:that.data.userProfile.organization,
+                      cardtitle:that.data.userProfile.title,
+                      cardimg:that.data.userProfile.img[0],
+                      like:that.data.like,
+                      phone:'',
+                      lookcount:lookcount,//浏览次数
+                      likeAvatarUrl:that.data.userProfile.likeAvatarUrl.concat([{'avatarUrl':e.userInfo.avatarUrl}])
+                    },
+                    complete: res => {
+                      console.log('[index.js][userlookcard-add] [over]=>', res)
+                    }
+                  })
+                 
               wx.cloud.callFunction({
                 // 云函数名称
-                name: 'userlookcard',
+                name: 'user-add',
                 // 传给云函数的参数
                 data: {
-                  nick_name: e.detail.userInfo.nickName,
-                  gender: e.detail.userInfo.gender,
-                  language: e.detail.userInfo.language,
-                  city: e.detail.userInfo.city,
-                  province: e.detail.userInfo.province,
-                  avatar_url: e.detail.userInfo.avatarUrl,
-                  country: e.detail.userInfo.country,
+                  nick_name: e.userInfo.nickName,
+                  gender: e.userInfo.gender,
+                  language: e.userInfo.language,
+                  city: e.userInfo.city,
+                  province: e.userInfo.province,
+                  avatar_url: e.userInfo.avatarUrl,
+                  country: e.userInfo.country,
                   openid: wx.getStorageSync('openid'),
-                  createTime: util.formatTime(new Date()),
-                  cardopenid:that.data.nowopenid,
-                  cardname:that.data.userProfile.name,
-                  cardorganization:that.data.userProfile.organization,
-                  cardtitle:that.data.userProfile.title,
-                  cardimg:that.data.userProfile.img[0],
-                  like:that.data.like,
-                  phone:''
+                  localStorageTime:util.formatTime(new Date()),
+                  lookcardlast: that.data.nowopenid,
                 },
                 complete: res => {
-                  console.log('[index.js][userlookcard-add] [over]=>', res)
+                  app.globalData.userInfo = e.userInfo;
+                  
+                  console.log('[index.js][user-add] =>', res)
                 }
               })
-              //修改card的浏览信息
-              wx.cloud.callFunction({
-                // 云函数名称
-                name: 'updatelook',
-                // 传给云函数的参数
-                data: {
-                  lookcount:lookcount,//浏览次数
-                  likeAvatarUrl:that.data.userProfile.likeAvatarUrl.concat([{'avatarUrl':e.detail.userInfo.avatarUrl}]),
-                  openid: wx.getStorageSync('openid'),
-                  createTime: util.formatTime(new Date()),
-                  nowopenid:this.data.nowopenid,
-                },
-                complete: res => {
-                  console.log('[index.js][updatelook-update] [over]=>', res)
-                }
+              
+            }else{
+              console.log('没授权')
+              wx.showModal({
+                title: '提示',
+                content: '为了舒适体检，请允许授权',
+                showCancel:false
               })
             }
-          })
-          wx.cloud.callFunction({
-            // 云函数名称
-            name: 'user-add',
-            // 传给云函数的参数
-            data: {
-              nick_name: e.detail.userInfo.nickName,
-              gender: e.detail.userInfo.gender,
-              language: e.detail.userInfo.language,
-              city: e.detail.userInfo.city,
-              province: e.detail.userInfo.province,
-              avatar_url: e.detail.userInfo.avatarUrl,
-              country: e.detail.userInfo.country,
-              openid: wx.getStorageSync('openid'),
-              localStorageTime:util.formatTime(new Date()),
-              lookcardlast: that.data.nowopenid,
-            },
-            complete: res => {
-              app.globalData.userInfo = e.detail.userInfo;
-              console.log('[index.js][user-add] =>', res)
-            }
-          })
-          
-        }else{
-          console.log('没授权')
-          wx.showModal({
-            title: '提示',
-            content: '为了舒适体检，请允许授权',
-            showCancel:false
-          })
-        }
+          }
+        })
       }
-    })
+    })  
+    
   },
 
   //获取手机号
   getPhoneNumber(e){
     let that = this;
-    
     wx.login({
       success(re) {
             wx.cloud.callFunction({
@@ -827,6 +850,11 @@ Page({
 
   gochat(){
     var that = this
+    util.buttonClicked(that);
+    wx.showLoading({
+      title: '加载中',
+    })
+    console.log(app.globalData.dongminguser)
     //浏览记录
     wx.cloud.database().collection('userlookcard').where({ _openid: wx.getStorageSync('openid'),cardopenid:that.data.nowopenid }).get().then(res1 => {
       if(res1.data.length == 0){
@@ -860,40 +888,50 @@ Page({
             likeAvatarUrl:that.data.userProfile.likeAvatarUrl.concat([{'avatarUrl':app.globalData.dongminguser.avatar_url}]),
           },
           success: res => {
+            wx.hideLoading()
             console.log('[index.js][userlookcard-add] [success]=>', res)
           },
           fail: res => {
+            wx.hideLoading()
             console.log('[index.js][userlookcard-add] [fail]=>', res)
           }
         })
       }
-      wx.cloud.callFunction({
-        // 云函数名称
-        name: 'user-add',
-        // 传给云函数的参数
-        data: {
-          nick_name: app.globalData.dongminguser.nick_name,
-          gender: app.globalData.dongminguser.gender,
-          language: app.globalData.dongminguser.language,
-          city: app.globalData.dongminguser.city,
-          province: app.globalData.dongminguser.province,
-          avatar_url: app.globalData.dongminguser.avatar_url,
-          country: app.globalData.dongminguser.country,
-          openid: wx.getStorageSync('openid'),
-          localStorageTime:util.formatTime(new Date()),
-          lookcardlast: that.data.nowopenid,
-        },
-        success: res => {
-          console.log('[index.js][user-add]success =>', res)
-          wx.navigateTo({
-            url: '/pages/chat/chat?cardid='+that.data.nowopenid+'&userid='+wx.getStorageSync('openid')+'&nickname='+that.data.userProfile.name+'&dis=0',
-          })
-        },
-        fail:res =>{
-          console.log('[index.js][user-add]fail =>',res)
-        }
-      })
-      
+      if(app.globalData.dongminguser){
+        wx.cloud.callFunction({
+          // 云函数名称
+          name: 'user-add',
+          // 传给云函数的参数
+          data: {
+            nick_name: app.globalData.dongminguser.nick_name,
+            gender: app.globalData.dongminguser.gender,
+            language: app.globalData.dongminguser.language,
+            city: app.globalData.dongminguser.city,
+            province: app.globalData.dongminguser.province,
+            avatar_url: app.globalData.dongminguser.avatar_url,
+            country: app.globalData.dongminguser.country,
+            openid: wx.getStorageSync('openid'),
+            localStorageTime:util.formatTime(new Date()),
+            lookcardlast: that.data.nowopenid,
+          },
+          success: res => {
+            wx.hideLoading()
+            console.log('[index.js][user-add]success =>', res)
+            wx.navigateTo({
+              url: '/pages/chat/chat?cardid='+that.data.nowopenid+'&userid='+wx.getStorageSync('openid')+'&nickname='+that.data.userProfile.name+'&dis=0',
+            })
+          },
+          fail:res =>{
+            wx.hideLoading()
+            console.log('[index.js][user-add]fail =>',res)
+          }
+        })
+      }else{
+        wx.hideLoading()
+        wx.navigateTo({
+          url: '/pages/chat/chat?cardid='+that.data.nowopenid+'&userid='+wx.getStorageSync('openid')+'&nickname='+that.data.userProfile.name+'&dis=0',
+        })
+      }
     })
   },
 

@@ -7,8 +7,13 @@
 	</view>
   <view wx:else class="userinfo" style="margin-bottom:50rpx;">
 		<image class="userinfo-avatar" src="/images/order/nologin.png" background-size="cover"></image>
-		<button class="weui-btn mini-btn" plain="true" size="mini" open-type="getUserInfo" bindgetuserinfo="onGetUserInfo">立即登录</button>
+    <button class="weui-btn mini-btn" plain="true" size="mini" bindtap="getUserProfile">立即登录</button>
+    
 	</view>
+  <!-- <view wx:else class="userinfo" style="margin-bottom:50rpx;">
+		<image class="userinfo-avatar" src="/images/order/nologin.png" background-size="cover"></image>
+		<button class="weui-btn mini-btn" plain="true" size="mini" open-type="onGetUserInfo" bindgetuserinfo="onGetUserInfo">立即登录</button>
+	</view> -->
   <view class="space"></view>
   <navigator url="/pages/order-list/index">
     <view class="menu-item">

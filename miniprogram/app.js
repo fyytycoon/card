@@ -7,7 +7,7 @@ App({
       console.error('请使用 2.2.3 或以上的基础库以使用云能力')
     } else {
       wx.cloud.init({
-        env: 'xxx-xxxxx',
+        env: 'xxoo-xxoo',
         traceUser: true,
       })
     }
@@ -119,23 +119,24 @@ App({
                   console.log('是否有浏览数据 =>',res1)
                   this.globalData.dongminguser = res1.data[0];
                   //[app.js]第一次访问
-                  if(res1.data.length == 0){
+                  if(res1.data.length == 0 ){
                     const ctime = "" + (new Date()).valueOf() + wx.getStorageSync('openid')
                     console.log('[app.js]第一次访问')
                     wx.cloud.database().collection('carduser_list').where({ _openid: this.globalData.nowopenid?this.globalData.nowopenid:this.globalData.moren }).get().then(res2 => {
                       console.log('[app.js]第一次访问,card->data=>',res2)
-                      this.globalData.userProfile= res2.data[0]
-                      wx.cloud.database().collection('productfenlei').where({ organizationid:res2.data[0].organizationid }).get().then(res5 => {
-                        this.globalData.data.fenleilist = res5.data
-                        that.getTlist()
-                      })
-                      //由于 getUserInfo 是网络请求，可能会在 Page.onLoad 之后才返回
+                      if(res2.data.length != 0){
+                        this.globalData.userProfile= res2.data[0]
+                        wx.cloud.database().collection('productfenlei').where({ organizationid:res2.data[0].organizationid }).get().then(res5 => {
+                          this.globalData.data.fenleilist = res5.data
+                          that.getTlist()
+                        })
+                        //由于 getUserInfo 是网络请求，可能会在 Page.onLoad 之后才返回
                       // 所以此处加入 callback 以防止这种情况
                       if (this.userInfoReadyCallback) {
                         this.userInfoReadyCallback(res2.data[0])
                       }
+                      }
                     })
-                    
                     wx.cloud.callFunction({
                       // 云函数名称
                       name: 'user-add',
@@ -170,33 +171,37 @@ App({
                     })
                   }else{
                     console.log('[app.js]老用户')
-                    
+                    this.globalData.userInfo = {
+                      "avatarUrl":res1.data[0].avatar_url,
+                      "nickName":res1.data[0].nick_name
+                    }
                     wx.cloud.database().collection('userlookcard').where({ _openid: res.result.openid,cardopenid: this.globalData.nowopenid?this.globalData.nowopenid:res1.data[0].lookcardlast }).get().then(res4 => {
                       if(res4.data.length !== 0){
                         this.globalData.like= res4.data[0].like
                       }
-
                       wx.cloud.database().collection('carduser_list').where({ _openid: this.globalData.nowopenid?this.globalData.nowopenid:res1.data[0].lookcardlast }).get().then(res3 => {
                         console.log('card=>data=>',res3)
-                        this.globalData.userProfile= res3.data[0]
-                        wx.cloud.database().collection('productfenlei').where({ organizationid:res3.data[0].organizationid }).get().then(res5 => {
-                          this.globalData.data.fenleilist = res5.data
-                          that.getTlist()
-                        })
-                        //由于 getUserInfo 是网络请求，可能会在 Page.onLoad 之后才返回
-                        // 所以此处加入 callback 以防止这种情况
-                        if (this.userInfoReadyCallback) {
-                          this.userInfoReadyCallback(res3.data[0])
+                        if(res3.data.length != 0){
+                          this.globalData.userProfile= res3.data[0]
+                          wx.cloud.database().collection('productfenlei').where({ organizationid:res3.data[0].organizationid }).get().then(res5 => {
+                            this.globalData.data.fenleilist = res5.data
+                            that.getTlist()
+                          })
+                          //由于 getUserInfo 是网络请求，可能会在 Page.onLoad 之后才返回
+                          // 所以此处加入 callback 以防止这种情况
+                          if (this.userInfoReadyCallback) {
+                            this.userInfoReadyCallback(res3.data[0])
+                          }
                         }
                       })
                     })
                     
                     if(res1.data[0].organizationid == ''){
-                      console.log('未绑定企业',res1.data)
+                      console.log('未绑定企业',res1.data[0].organizationid)
                     }else{
                       console.log('已绑定企业',res1.data[0].organizationid)
                       var _onejifenleilist=[],dengji = 1,_erjilist = [];
-                      wx.cloud.database().collection('productfenlei').where({ organizationid:"d6b130aa5f9d0a47000385cf4ef2084d" }).get().then(res => {
+                      wx.cloud.database().collection('productfenlei').where({ organizationid:res1.data[0].organizationid }).get().then(res => {
                         console.log('管理员分类=>',res.data)
                         //选出一级分类，放入 _onejifenleilist
                         for (var x in res.data) {
@@ -240,8 +245,10 @@ App({
                     if (res1.authSetting['scope.userInfo'] ) {
                       console.log('已授权')
                       // 已经授权，可以直接调用 getUserInfo 获取头像昵称，不会弹框
-                      wx.getUserInfo({
-                        success: res => {
+                      wx.getUserProfile({
+                        desc: '用于完善会员资料', // 声明获取用户个人信息后的用途，后续会展示在弹窗中，请谨慎填写
+                        success: (res) => {
+                          console.log(res)
                           this.globalData.userInfo = res.userInfo
                         }
                       })

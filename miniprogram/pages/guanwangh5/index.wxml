@@ -23,12 +23,27 @@
       </view>
     </swiper-item>
   </swiper>
-  <view class="padding bg-white">
-    <text class="text-left padding" decode="{{true}}">&nbsp;&nbsp;{{guanwang.gsjs}}</text>
+  <view class="padding bg-white" style="white-space:pre-wrap">
+    <text class="text-left padding">{{text}}</text>
   </view>
+
+  <view class="cu-bar bg-white margin-top">
+  <view class="action">
+    <text class="cuIcon-title text-orange"></text> 资质证书
+  </view>
+</view>
+<view class="tower-swiper" bindtouchmove="towerMove" bindtouchstart="towerStart" bindtouchend="towerEnd">
+  <view class="tower-item {{item.zIndex==1?'none':''}}" wx:for="{{swiperList}}" wx:key style="--index:{{item.zIndex}};--left:{{item.mLeft}}">
+    <view class="swiper-item">
+      <image src="{{item.url}}" mode="aspectFill" wx:if="{{item.type=='image'}}"></image>
+      <video src="{{item.url}}" autoplay loop muted show-play-btn="{{false}}" controls="{{false}}" objectFit="cover" wx:if="{{item.type=='video'}}"></video>
+    </view>
+  </view>
+</view>
+
   <view class="cu-bar bg-white margin-top">
     <view class="action">
-      <text class="cuIcon-title text-orange"></text> 企业咨询
+      <text class="cuIcon-title text-orange"></text> 企业资讯
     </view>
   </view>
   <view class="cu-card article" >

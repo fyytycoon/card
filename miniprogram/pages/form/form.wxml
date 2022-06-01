@@ -137,7 +137,7 @@
 	</view>
 
 	<view class="cu-form-group margin-top">
-		<view class="title">我的照片{{imgList.length}}/1</view>
+		<view class="title">我的照片{{imgList.length}}/9</view>
 		<switch checked="{{photo}}" bindchange="photoswitch"></switch>
 	</view>
 	<view class="cu-form-group" hidden="{{!photo}}">

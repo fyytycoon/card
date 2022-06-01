@@ -60,7 +60,10 @@ Page({
       that.shouquan()
     }
     if(e.cardid){
+      console.log('cardid进入=>',e.cardid)
+      app.globalData.nowopenid = e.cardid
       db.collection('carduser_list').where({ _openid: e.cardid }).get().then(res2 => {
+        console.log('carduser=>',res2)
         that.setData({
           nowopenid : e.cardid,
           userProfile : res2.data[0]
@@ -150,33 +153,38 @@ Page({
           }
         })
       }
-      wx.cloud.callFunction({
-        // 云函数名称
-        name: 'user-add',
-        // 传给云函数的参数
-        data: {
-          nick_name: app.globalData.dongminguser.nick_name,
-          gender: app.globalData.dongminguser.gender,
-          language: app.globalData.dongminguser.language,
-          city: app.globalData.dongminguser.city,
-          province: app.globalData.dongminguser.province,
-          avatar_url: app.globalData.dongminguser.avatar_url,
-          country: app.globalData.dongminguser.country,
-          openid: wx.getStorageSync('openid'),
-          localStorageTime:util.formatTime(new Date()),
-          lookcardlast: that.data.nowopenid,
-        },
-        success: res => {
-          console.log('[index.js][user-add]success =>', res)
-          wx.navigateTo({
-            url: '/pages/chat/chat?cardid='+that.data.nowopenid+'&userid='+wx.getStorageSync('openid')+'&nickname='+that.data.userProfile.name+'&dis=0',
-          })
-        },
-        fail:res =>{
-          console.log('[index.js][user-add]fail =>',res)
-        }
-      })
-      
+      if(app.globalData.dongminguser){
+        wx.cloud.callFunction({
+          // 云函数名称
+          name: 'user-add',
+          // 传给云函数的参数
+          data: {
+            nick_name: app.globalData.dongminguser.nick_name,
+            gender: app.globalData.dongminguser.gender,
+            language: app.globalData.dongminguser.language,
+            city: app.globalData.dongminguser.city,
+            province: app.globalData.dongminguser.province,
+            avatar_url: app.globalData.dongminguser.avatar_url,
+            country: app.globalData.dongminguser.country,
+            openid: wx.getStorageSync('openid'),
+            localStorageTime:util.formatTime(new Date()),
+            lookcardlast: that.data.nowopenid,
+          },
+          success: res => {
+            console.log('[index.js][user-add]success =>', res)
+            wx.navigateTo({
+              url: '/pages/chat/chat?cardid='+that.data.nowopenid+'&userid='+wx.getStorageSync('openid')+'&nickname='+that.data.userProfile.name+'&dis=0',
+            })
+          },
+          fail:res =>{
+            console.log('[index.js][user-add]fail =>',res)
+          }
+        })
+      }else{
+        wx.navigateTo({
+          url: '/pages/chat/chat?cardid='+that.data.nowopenid+'&userid='+wx.getStorageSync('openid')+'&nickname='+that.data.userProfile.name+'&dis=0',
+        })
+      }
     })
   },
 
@@ -363,7 +371,7 @@ Page({
     console.log(this.data.goodsDetail._id,app.globalData.dongminguser.lookcardlast)
     return {
       title: this.data.goodsDetail.name,
-      path: '/pages/goods-details/index?id=' + this.data.goodsDetail._id + '&cardid=' + app.globalData.nowopenid,
+      path: '/pages/goods-details/index?id=' + this.data.goodsDetail._id + '&cardid=' + this.data.nowopenid,
       imageUrl: this.data.goodsDetail.pic,
       success: function (res) {
         // 转发成功
@@ -384,7 +392,7 @@ Page({
     wx.cloud.callFunction({
       name:'getwxacode',
       data:{
-        path:'/pages/goods-details/index?id=' + this.data.goodsDetail._id + '&cardid=' + app.globalData.nowopenid,
+        path:'/pages/goods-details/index?id=' + this.data.goodsDetail._id + '&cardid=' + this.data.nowopenid,
         imgid:this.data.goodsDetail.pic,
         flag:this.data.goodsDetail._id
       },

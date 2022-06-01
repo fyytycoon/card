@@ -46,6 +46,7 @@ Page({
 
   //该方法绑定了页面滑动到底部的事件
   onReachBottom: function () {
+    console.log('onReachBottom')
     var self = this;
     self.goproductlist();
   },

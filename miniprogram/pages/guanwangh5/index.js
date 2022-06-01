@@ -20,7 +20,11 @@ Page({
       guanwang:wx.getStorageSync('guanwang'),
       jiazai:true
     })
-    
+    this.setData({
+      text:this.data.guanwang.gsjs.replace(/&/g,'\n'),
+      swiperList:this.data.guanwang.zhizizhengshu
+    })
+    this.towerSwiper('swiperList');
   },
 
   /**
@@ -108,6 +112,7 @@ Page({
     this.setData({
       swiperList: list
     })
+    console.log(this.data.swiperList)
   },
   // towerSwiper触摸开始
   towerStart(e) {

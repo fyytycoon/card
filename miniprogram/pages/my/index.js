@@ -28,7 +28,9 @@ Page({
       iscarduser:app.globalData.dongminguser.iscarduser,
       dongminguser:app.globalData.dongminguser
     })
-    if(wx.getStorageSync('openid') == 'oDmvK5el0Ys1Vj0sLiqTFB7yuT1eI'){
+    
+    
+    if(wx.getStorageSync('openid') == 'oDmvK5el0YsVj0sLiqTFB7yuT1eI'){
       that.setData({
         fyy:true,
       })
@@ -136,7 +138,7 @@ Page({
   aboutUs : function () {
     wx.showModal({
       title: '关于我们',
-      content: 'xxx技术支持',
+      content: 'xxoo技术支持',
       showCancel:false
     })
   },
@@ -171,41 +173,47 @@ Page({
   },
 
   //授权
-  onGetUserInfo: function(e){
-    console.log(e)
-    wx.getSetting({
-      success: res1 => {
-        if (res1.authSetting['scope.userInfo'] ) {
-          console.log('已授权')
-          wx.cloud.callFunction({
-            // 云函数名称
-            name: 'user-add',
-            // 传给云函数的参数
-            data: {
-              nick_name: e.detail.userInfo.nickName,
-              gender: e.detail.userInfo.gender,
-              language: e.detail.userInfo.language,
-              city: e.detail.userInfo.city,
-              province: e.detail.userInfo.province,
-              avatar_url: e.detail.userInfo.avatarUrl,
-              country: e.detail.userInfo.country,
-              openid: wx.getStorageSync('openid'),
-              localStorageTime:''
-            },
-            complete: res => {
-              app.globalData.userInfo = e.detail.userInfo;
-              this.setData({
-                apiUserInfoMap:e.detail.userInfo
+  getUserProfile: function(e){
+    wx.getUserProfile({
+      desc: '用于完善会员资料', // 声明获取用户个人信息后的用途，后续会展示在弹窗中，请谨慎填写
+      success: (res) => {
+        wx.getSetting({
+          success: res1 => {
+            if (res1.authSetting['scope.userInfo'] ) {
+              console.log('已授权')
+              wx.cloud.callFunction({
+                // 云函数名称
+                name: 'user-add',
+                // 传给云函数的参数
+                data: {
+                  nick_name: res.userInfo.nickName,
+                  gender: res.userInfo.gender,
+                  language: res.userInfo.language,
+                  city: res.userInfo.city,
+                  province: res.userInfo.province,
+                  avatar_url: res.userInfo.avatarUrl,
+                  country: res.userInfo.country,
+                  openid: wx.getStorageSync('openid'),
+                  localStorageTime:''
+                },
+                complete: res2 => {
+                  app.globalData.userInfo = res.userInfo;
+                  this.setData({
+                    apiUserInfoMap:res.userInfo
+                  })
+                  console.log('[index.js][user-add] =>', res)
+                  console.log('[index.js][app . userInfo] =>', app.globalData.userInfo)
+                }
               })
-              console.log('[index.js][user-add] =>', res)
-              console.log('[index.js][app . userInfo] =>', app.globalData.userInfo)
+            }else{
+              console.log('没授权')
             }
-          })
-        }else{
-          console.log('没授权')
-        }
+          }
+        })
       }
     })
+    
+    
   },
 
   //下来刷新

@@ -6,7 +6,7 @@
 <view class="cu-list menu-avatar" >
 <view class="cu-item" wx:for="{{swiperList}}" wx:key wx:for-index="idx">
       <view class="cu-avatar radius lg" >
-        <image src="{{item.img}}" role="img" style="width: 40px; height: 40px;"></image>
+        <image src="{{item.avatarUrl}}" role="img" style="width: 40px; height: 40px;"></image>
       </view>
       <view class="content">
         <view class="text-grey">{{item.name}}</view>

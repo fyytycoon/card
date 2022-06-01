@@ -20,16 +20,22 @@
       </view>
       <view class="section-2">
           <view class="section-2-detail">
-            <view class="loca flex1">
+            <view class="loca {{userProfile.address2?'flex2':'flex1'}}">
                 <image src="/images/icon/qinglianxiwo.png"></image>  <text> {{userProfile.mobile}}</text>
             </view>
-            <view class="loca flex1">
-                <image src="/images/youxiang.png"></image>  <text> {{userProfile.email}}</text>
+            <view class="loca {{userProfile.address2?'flex2':'flex1'}}">
+                <image src="/images/wangzhi.png"></image>  <text> {{userProfile.email1?userProfile.email1:userProfile.email}}</text>
             </view>
-            <view class="loca flex1" >
+            <view class="loca {{userProfile.address2?'flex2':'flex1'}}">
               <view style="display: flex;align-items: center;">
                 <image src="/images/icon/local.png"></image>  
                 <text style="text-overflow: ellipsis;overflow: hidden;white-space: nowrap;display: block;"> {{userProfile.address}}</text>
+              </view>
+            </view>
+            <view class="loca flex2" hidden="{{!userProfile.address2}}">
+              <view style="display: flex;align-items: center;">
+                <image src="/images/icon/local.png"></image>  
+                <text style="text-overflow: ellipsis;overflow: hidden;white-space: nowrap;display: block;"> {{userProfile.address2}}</text>
               </view>
             </view>
             <!-- <view class="loca flex1">
@@ -98,7 +104,7 @@
       <view>ABOUT</view>
     </view>
     <view style="background-color: #fff;border-radius: 10rpx;">
-      <view class="border {{isFold?'hide':''}}">{{userProfile.textarea}}</view>
+      <view class="border {{isFold?'hide':''}}" style="white-space:pre-wrap"><text>{{text}}</text></view>
       <image class="arrow" src=" {{isFold?'/images/icon/down.png':'/images/icon/up.png'}}" bindtap="showAll"></image>
     </view>
   </view>
@@ -130,10 +136,11 @@
       <view>ENTERPRISE</view>
     </view>
     <view class="cu-card article" >
-        <view class="cu-item shadow" style="padding: 30rpx;margin: 30rpx 0;">
-          <view class="content" style="padding: 0;flex-direction: row;display: flex;align-items: center;justify-content: center;" bindtap="goh5">
-            <image style="width: 150rpx;height: 120rpx;" src="{{userProfile.logoimg}}"></image>
-            <text style="font-size: 32rpx;">{{userProfile.organization}}</text>
+        <view class="cu-item shadow" style="padding: 30rpx;margin: 30rpx 0 0 0;">
+          <view class="content" style="padding: 0;flex-direction: row;display: flex;align-items: center;justify-content: center;" bindtap="{{!buttonClicked?'goh5':''}}">
+            <image style="width: 15vw;height: 80rpx;" src="{{userProfile.logoimg}}"></image>
+            <text style="font-size: 3vw">{{userProfile.organization}}</text>
+            <button class="cu-btn round bg-green shadow button-hover" style="font-size: 3vw;height: 50rpx" >点击进入</button>
           </view>
         </view>
       </view>
@@ -225,7 +232,7 @@
     <view class="cu-item self">
       <view class="main">
         <view class="content bg-green shadow" wx:if="{{qipaokuang}}">
-          <text>您好!欢迎进入我的名片.有什么可以帮到您的,点击与我沟通.</text>
+          <text>您好!欢迎进入我的名片.有什么可以帮到您的,点击头像与我沟通.</text>
         </view>
       </view>
       <button class="cu-avatar radius" open-type="getPhoneNumber" bindgetphonenumber="getPhoneNumber" >
@@ -237,10 +244,10 @@
     <view class="cu-item self">
       <view class="main">
         <view class="content bg-green shadow" wx:if="{{qipaokuang}}">
-          <text>您好!欢迎进入我的名片.有什么可以帮到您的,点击与我沟通.</text>
+          <text>您好!欢迎进入我的名片.有什么可以帮到您的,点击头像与我沟通.</text>
         </view>
       </view>
-      <button class="cu-avatar radius" open-type="getUserInfo" bindgetuserinfo="onGetUserInfo" >
+      <button class="cu-avatar radius" bindtap="getUserProfile">
         <image class="coupons-float_image" src="{{userProfile.img}}"></image>
       </button>
     </view>
@@ -249,10 +256,10 @@
     <view class="cu-item self">
       <view class="main">
         <view class="content bg-green shadow" wx:if="{{qipaokuang}}">
-          <text>您好!欢迎进入我的名片.有什么可以帮到您的,点击与我沟通.</text>
+          <text>您好!欢迎进入我的名片.有什么可以帮到您的,点击头像与我沟通.</text>
         </view>
       </view>
-      <button class="cu-avatar radius" bindtap="gochat" >
+      <button class="cu-avatar radius" bindtap="{{!buttonClicked?'gochat':''}}" >
         <image class="coupons-float_image" src="{{userProfile.img}}"></image>
       </button>
     </view>
@@ -295,14 +302,19 @@
 
 <!-- 广告位 -->
 <view class="cu-modal {{modalName=='Image'?'show':''}}">
-  <view class="cu-dialog">
+  <!-- <view class="cu-dialog">
     <view class="bg-img" bindtap="goguanggao">
       <image src="{{guanggaowei}}" style="width:100%" mode="aspectFit"></image>
     </view>
     <view class="cu-bar bg-white">
       <view class="action margin-0 flex-sub  solid-left" bindtap="hideModal">我知道了</view>
     </view>
+  </view> -->
+  <view class="cu-dialog">
+    <view class="bg-img" style="background-image: url({{guanggaowei}});height:45vh;" bindtap="goguanggao">
+    </view>
+    <view class="cu-bar bg-white">
+      <view class="action margin-0 flex-sub  solid-left" bindtap="hideModal">我知道了</view>
+    </view>
   </view>
 </view>
-<wux-dialog id="wux-dialog" />
-<wux-dialog id="wux-dialog--alert" />

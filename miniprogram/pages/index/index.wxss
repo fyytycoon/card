@@ -343,9 +343,14 @@ button:last-child {
 }
 
 .flex2{
-  height: 40rpx;
+  height: 33rpx;
   line-height: 40rpx;
   /*margin-left: 10rpx;*/
+}
+
+.flex2 image{
+  width:20rpx;
+  height: 20rpx;
 }
 .flex1 image{
   width:20rpx;
